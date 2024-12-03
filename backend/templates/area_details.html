@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="mb-4">
+    <nav class="text-gray-600">
+        {% for parent in breadcrumb %}
+            &gt; <a href="/area/{{ parent.id }}" class="text-blue-500 hover:underline">{{ parent.name }}</a>
+        {% endfor %}
+    </nav>
+</div>
+
+<h1 class="text-2xl font-bold mb-4">{{ area.name }}</h1>
+
+
+{% if children %}
+<div class="mt-4">
+    <a href="/area/{{ area.id }}/add-area" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+        Add a New Sub-Area
+    </a>
+</div>
+<div class="flex flex-col pl-6 mt-4 gap-2">
+        {% for child in children %}
+            <div>
+                <a href="/area/{{ child.id }}" class="text-blue-500 hover:underline">{{ child.name }}</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if not children %}
+    <!-- Button to create a new climb -->
+    <div class="mt-4">
+        <a href="/area/{{ area.id }}/add-climb" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+            Add a New Climb
+        </a>
+    </div>
+
+    <!-- Button to create a new area -->
+    <div class="mt-4">
+        <a href="/area/{{ area.id }}/add-area" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Add a New Sub-Area
+        </a>
+    </div>
+
+
+    <h2 class="text-xl font-semibold mt-4">Climbs in this Area</h2>
+    <div class="flex flex-col gap-2 pl-6 mt-4">
+        {% if climbs %}
+            {% for climb in climbs %}
+                <div class="flex flex-row py-2 gap-2 justify-between items-center">
+                    <strong>{{ climb.name }}</strong>
+                    <div>
+                        {% if climb.grade_yds %}
+                            <span>{{ climb.grade_yds }}</span>
+                        {% endif %}
+                        <form action="/climbs/{{ climb.id }}/interest" method="post" class="inline-block ml-4">
+                            <input type="hidden" name="climb_id" value="{{ climb.id }}">
+                            <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                                Project
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No climbs available for this area.</p>
+        {% endif %}
+    </div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Shared Climbing Interests</h1>
+
+{% if shared_interests %}
+<ul class="space-y-6">
+    {% for climb, friends in shared_interests.items() %}
+    <li class="p-4 bg-white shadow rounded">
+        <h2 class="text-lg font-bold">{{ climb.name }}</h2>
+        <p class="text-gray-500">{{ climb.location }}</p>
+        {% if friends %}
+        <p class="mt-2 text-gray-600">Shared with:</p>
+        <ul class="mt-1 space-y-2">
+            {% for friend in friends %}
+            <li class="p-2 bg-gray-100 rounded">{{ friend.name }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="mt-2 text-gray-600">No friends share this interest.</p>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="text-gray-600">You have no climbing interests yet. <a href="/areas" class="text-blue-500 hover:underline">Add some climbs</a>.</p>
+{% endif %}
+{% endblock %}

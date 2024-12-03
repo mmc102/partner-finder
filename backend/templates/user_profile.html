@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- User Profile Content -->
+<div class="container mx-auto py-6">
+    <div class="flex items-center space-x-4 mb-6">
+        <div class="w-16 h-16 rounded-full bg-blue-500 text-white flex items-center justify-center text-2xl">
+            {{ user.name[0] }}
+        </div>
+        <div>
+            <h1 class="text-3xl font-bold">{{ user.name }}</h1>
+            <p class="text-gray-600">{{ user.email }}</p>
+        </div>
+    </div>
+    {% if request.state.current_user.id != user.id %}
+    {% set is_following = request.state.current_user.following | selectattr('friend_id', 'equalto', user.id) | list %}
+    {% if not is_following %}
+    <form action="/users/{{ request.state.current_user.id }}/friends" method="post" class="inline-block">
+        <input type="hidden" name="friend_id" value="{{ user.id }}">
+        <button type="submit" class="bg-blue-500 text-white py-1 px-3 rounded">
+            Follow
+        </button>
+    </form>
+    {% else %}
+    <span class="text-sm text-gray-500">You're already following this user.</span>
+    {% endif %}
+    {% endif %}
+
+    <div class="mb-6">
+        <h2 class="text-2xl font-semibold mb-4">Projects</h2>
+
+        {% if user_climbs %}
+        <div class="space-y-4">
+            {% for climb in user_climbs %}
+            <a href="/climb/{{ climb.id }}" >
+            <div class="my-2 p-4 flex justify-between items-center bg-white shadow rounded">
+                <p class="text-lg font-semibold">{{ climb.name }}</p>
+                <p>{{ climb.grade_yds }}</p>
+            </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-gray-600">No climbs found for this user.</p>
+        {% endif %}
+    </div>
+
+    <!-- User's Following -->
+    <div class="mb-6">
+        <h2 class="text-2xl font-semibold mb-4">Following</h2>
+        {% if following %}
+        <ul class="space-y-2">
+            {% for person in following %}
+            <li>
+                <a href="/users/{{ person.id }}" class="text-blue-500 hover:underline">{{ person.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="text-gray-600">Not following anyone yet.</p>
+        {% endif %}
+    </div>
+    
+
+    <!-- User's Followers -->
+    <div>
+        <h2 class="text-2xl font-semibold mb-4">Followers</h2>
+        {% if followers %}
+        <ul class="space-y-2">
+            {% for person in followers %}
+            <li>
+                <a href="/users/{{ person.id }}" class="text-blue-500 hover:underline">{{ person.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="text-gray-600">No followers yet.</p>
+        {% endif %}
+    </div>
+
+
+
+</div>
+{% endblock %}

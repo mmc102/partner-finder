@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Add a New Climb in {{ area.name }}</h1>
+
+<form action="/area/{{ area.id }}/add-climb" method="post" class="space-y-4">
+    <div>
+        <label for="climb_name" class="block text-sm font-medium text-gray-700">Climb Name</label>
+        <input type="text" name="climb_name" id="climb_name" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+    </div>
+    <div>
+        <label for="grade_yds" class="block text-sm font-medium text-gray-700">YDS Grade</label>
+        <input type="text" name="grade_yds" id="grade_yds" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+    </div>
+    <div>
+        <label for="grade_font" class="block text-sm font-medium text-gray-700">Font Grade (Optional)</label>
+        <input type="text" name="grade_font" id="grade_font" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+    </div>
+    <div>
+        <label for="description" class="block text-sm font-medium text-gray-700">Description (Optional)</label>
+        <textarea name="description" id="description" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+    </div>
+
+    <div>
+        <label for="location" class="block text-sm font-medium text-gray-700">Location (Optional)</label>
+        <input type="text" name="location" id="location" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+    </div>
+
+    <div>
+        <label for="protection" class="block text-sm font-medium text-gray-700">Protection (Optional)</label>
+        <input type="text" name="protection" id="protection" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+    </div>
+
+    <div>
+        <label for="latitude" class="block text-sm font-medium text-gray-700">Latitude (Optional)</label>
+        <input type="number" step="any" name="latitude" id="latitude" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+    </div>
+    
+    <div>
+        <label for="longitude" class="block text-sm font-medium text-gray-700">Longitude (Optional)</label>
+        <input type="number" step="any" name="longitude" id="longitude" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+    </div>
+
+    <button type="submit" class="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600">
+        Add Climb
+    </button>
+</form>
+{% endblock %}

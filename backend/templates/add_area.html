@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Add a New Area under {{ parent_area.name }}</h1>
+
+<form action="/area/{{ parent_area.id }}/add-area" method="post" class="space-y-4">
+    <div>
+        <label for="name" class="block text-sm font-medium text-gray-700">Area Name</label>
+        <input type="text" name="name" id="name" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+    </div>
+
+    <div>
+        <label for="latitude" class="block text-sm font-medium text-gray-700">Latitude (Optional)</label>
+        <input type="number" name="latitude" id="latitude" step="any" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+    </div>
+
+    <div>
+        <label for="longitude" class="block text-sm font-medium text-gray-700">Longitude (Optional)</label>
+        <input type="number" name="longitude" id="longitude" step="any" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+    </div>
+
+    <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600">
+        Add Area
+    </button>
+</form>
+{% endblock %}

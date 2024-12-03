@@ -1,0 +1,25 @@
+from fastapi import Request
+from starlette.middleware.base import BaseHTTPMiddleware
+from sqlalchemy.orm import Session
+from models import Notification
+from database import get_db
+
+class NotificationMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        # You can fetch the current user from session, cookies, or your preferred method
+        current_user = await get_current_user(request)  # This is your method to get the current user
+        
+        # Fetch the unread notifications count for the current user
+        unread_notifications_count = 0
+        if current_user:
+            db: Session = get_db()
+            unread_notifications_count = db.query(Notification).filter(
+                Notification.user_id == current_user.id, Notification.read == False
+            ).count()
+
+        # Add the unread notification count to the request state
+        request.state.unread_notifications_count = unread_notifications_count
+        
+        # Proceed with the request
+        response = await call_next(request)
+        return response

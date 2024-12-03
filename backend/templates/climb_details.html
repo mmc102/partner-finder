@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="mb-4">
+    <nav class="text-gray-600">
+        {% for parent in breadcrumb %}
+        &gt; <a href="/area/{{ parent.id }}" class="text-blue-500 hover:underline">{{ parent.name }}</a>
+        {% endfor %}
+    </nav>
+</div>
+
+<h1 class="text-2xl font-bold mb-4">{{ climb.name }}</h1>
+
+<p><strong>Grade (YDS):</strong> {{ climb.grade_yds }}</p>
+
+<h2 class="text-xl font-bold mt-4">Users Projecting</h2>
+{% if users_with_interest %}
+<ul class="mt-2 space-y-4">
+    {% for user in users_with_interest %}
+    <a href="/users/{{ user.id }}">
+    <li class="p-4 bg-white shadow rounded">
+        <p class="text-lg font-bold">{{ user.name }}</p>
+    </li>
+    </a>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="text-gray-600">No users have this climb as a project yet.</p>
+{% endif %}
+{% endblock %}

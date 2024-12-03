@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Your Feed</h1>
+
+{% if feed_items %}
+<ul class="space-y-4">
+    {% for item in feed_items %}
+    <li class="p-4 bg-white shadow rounded">
+        <p class="text-gray-700">
+            <span class="font-bold">{{ item.user.name }}</span>
+            {{ item.details }}
+        </p>
+        <p class="text-gray-400 text-xs">{{ item.timestamp.strftime('%Y-%m-%d') }}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="text-gray-600">Your feed is empty.</p>
+{% endif %}
+{% endblock %}

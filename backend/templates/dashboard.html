@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Welcome, {{ current_user.name }}!</h1>
+
+<div>
+
+
+
+    <h2 class="text-xl font-bold">Projects</h2>
+    <a href="/areas" class="text-blue-500">Add Projects</a>
+
+
+    {% if shared_interests %}
+    <ul class="space-y-6">
+        {% for climb, friends in shared_interests.items() %}
+
+        <a href="/climb/{{ climb.id }}" >
+        <li class="p-4 bg-white shadow rounded">
+            <div>
+                <p class="text-lg font-bold">{{ climb.name }} ({{climb.grade_yds}}) </p>
+            </div>
+            <div class="flex space-x-2">
+                <form action="/climbs/{{ climb.id }}/remove" method="post">
+                    <input type="hidden" name="completed" value="true">
+                    <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                        Sent
+                    </button>
+                </form>
+                <form action="/climbs/{{ climb.id }}/remove" method="post">
+                    <input type="hidden" name="completed" value="false">
+                    <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                        Remove
+                    </button>
+                </form>
+
+            </div>
+
+
+            {% if friends %}
+            <p class="mt-2 text-gray-600">Also Projecting:</p>
+            <ul class="mt-1 space-y-2">
+                {% for friend in friends %}
+                <li class="p-2 bg-gray-100 rounded">{{ friend.name }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="mt-2 text-gray-600">No friends share this interest.</p>
+            {% endif %}
+        </li>
+        </a>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-gray-600">You have no climbing interests yet. <a href="/areas" class="text-blue-500 hover:underline">Add some climbs</a>.</p>
+    {% endif %}
+</div>
+
+{% if feed_items %}
+
+<h1 class="text-xl font-bold ">Your Feed</h1>
+<a href="/feed" class="text-blue-500">Full Feed</a>
+<ul class="space-y-4">
+    {% for item in feed_items %}
+    <li class="p-4 bg-white shadow rounded">
+        <p class="text-gray-700">
+            <span class="font-bold">{{ item.user.name }}</span>
+            {{ item.details }}
+        </p>
+        <p class="text-gray-400 text-xs">{{ item.timestamp.strftime('%Y-%m-%d') }}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<div class="mb-6">
+    <h2 class="text-xl font-bold">Following</h2>
+    <a href="/users" class="text-blue-500">Follow more people</a>
+    {% if following %}
+    <ul class="mt-2 space-y-4">
+        {% for friend in following %}
+        <a href="/users/{{ friend.id }}">
+        <li class="p-4 bg-white shadow rounded">
+             {{ friend.name }}
+        </li>
+        </a>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-gray-600">You are not following anyone yet. <a href="/users" class="text-blue-500 hover:underline">Find people to follow</a>.</p>
+    {% endif %}
+</div>
+
+<div class="mb-6">
+    <h2 class="text-xl font-bold">Followers</h2>
+    {% if followers %}
+    <ul class="mt-2 space-y-4">
+        {% for friend in followers %}
+        <a href="/users/{{ friend.id }}">
+            <li class="p-4 bg-white shadow rounded">
+                {{ friend.name }}
+            </li>
+        </a>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-gray-600">You don't have any followers yet.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

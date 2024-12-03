@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Double Pad Stack</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow mb-6">
+        <div class="container mx-auto p-4 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="text-xl font-bold">
+                <a href="/" class="text-gray-800 hover:text-blue-500">Double Pad Stack</a>
+            </div>
+
+            <!-- Mobile Profile Indicator Bubble -->
+            <div class="flex gap-2">
+            {% if request.state.current_user %}
+            <div class="lg:hidden flex justify-center gap-2">
+                <a href="/notifications" class="text-gray-700 font-medium hover:text-blue-500 flex items-center">
+                    {% if request.state.unread_notifications_count > 0 %}
+                    <a href="/notifications" class="w-10 h-10 rounded-full bg-red-500 text-white flex items-center justify-center text-xl font-bold">{{ request.state.unread_notifications_count }}</a>
+                    {% endif %}
+                </a>
+                <a href="/" class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center text-xl font-bold">
+                    {{ request.state.current_user.name[0] }}
+                </a>
+            </div>
+            {% endif %}
+
+            <!-- Mobile Hamburger Menu Button -->
+            <div class="lg:hidden flex items-center">
+                <button id="menu-toggle" class="text-gray-800 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+            </div>
+            <ul class="hidden lg:flex space-x-6">
+                <li><a href="/" class="text-gray-600 hover:text-blue-500">Home Feed</a></li>
+                <li><a href="/users" class="text-gray-600 hover:text-blue-500">Add Friends</a></li>
+                <li><a href="/shared-interests" class="text-gray-600 hover:text-blue-500">Shared Projects</a></li>
+                <li><a href="/areas" class="text-gray-600 hover:text-blue-500">Add Projects</a></li>
+            </ul>
+
+            {% if request.state.current_user %}
+            <div class="hidden lg:flex items-center space-x-4">
+                    <a href="/notifications" class="text-gray-700 font-medium hover:text-blue-500 flex items-center">
+                        {% if request.state.unread_notifications_count > 0 %}
+                            <span class="top-0 right-0 bg-red-500 text-white text-xs rounded-full px-2 py-1">{{ request.state.unread_notifications_count }}</span>
+                        {% endif %}
+                    </a>
+                <a href="/" class="text-gray-700 font-medium hover:text-blue-500">{{ request.state.current_user.name }}</a>
+                <form action="/logout" method="post">
+                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                        Logout
+                    </button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="lg:hidden bg-white shadow-md hidden">
+            <ul class="space-y-4 px-4 py-3">
+                <li><a href="/users" class="text-gray-600 hover:text-blue-500">Add Friends</a></li>
+                <li><a href="/shared-interests" class="text-gray-600 hover:text-blue-500">Shared Projects</a></li>
+                <li><a href="/areas" class="text-gray-600 hover:text-blue-500">Add Projects</a></li>
+
+                <!-- Show user info if logged in -->
+                {% if request.state.current_user %}
+                    <li>
+                        <a href="/" class="text-gray-700 font-medium hover:text-blue-500">Welcome, {{ request.state.current_user.name }}</a>
+                    </li>
+                    <li>
+                        <form action="/logout" method="post">
+                            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 w-full">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+                    <!-- Mobile Notification Count -->
+                    <li class="relative">
+                        <a href="/notifications" class="text-gray-600 hover:text-blue-500 flex items-center">
+                            Notifications
+                            {% if request.state.unread_notifications_count is not none and request.state.unread_notifications_count > 0 %}
+                                <span class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-2 py-1">{{ request.state.unread_notifications_count }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                {% else %}
+                    <li><a href="/login" class="text-gray-600 hover:text-blue-500">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Content Section -->
+    <div>
+        {% if message %}
+        <div class="mb-4 p-4 bg-green-100 text-green-800 rounded shadow">
+            {{ message }}
+        </div>
+        {% endif %}
+        <div class="mx-2">
+        {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <script>
+        // Toggle the mobile menu
+        document.getElementById("menu-toggle").addEventListener("click", function() {
+            const menu = document.getElementById("mobile-menu");
+            menu.classList.toggle("hidden");
+        });
+    </script>
+</body>
+</html>

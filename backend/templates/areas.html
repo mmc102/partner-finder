@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Climbing Areas</h1>
+
+<ul class="list-disc pl-6">
+    {% for area in areas %}
+    <li>
+        <a href="/area/{{ area.id }}" class="text-blue-500 hover:underline">{{ area.name }}</a>
+        {% if area.children %}
+        <ul class="list-disc pl-6">
+            {% for child in area.children %}
+            <li>
+                <a href="/area/{{ child.id }}" class="text-blue-500 hover:underline">{{ child.name }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
