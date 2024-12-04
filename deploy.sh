@@ -15,6 +15,14 @@ docker-compose build
 echo "Starting the Docker containers..."
 docker-compose up -d --wait
 
+echo "Waiting for FastAPI to be ready..."
+until curl -s http://localhost:8000/health | grep -q "status"; do
+  echo "FastAPI is not ready yet. Retrying in 5 seconds..."
+  sleep 5
+done
+echo "FastAPI is ready."
+
+
 # Step 4: Run database migrations with Alembic
 echo "Running Alembic migrations..."
 docker-compose exec fastapi-app alembic upgrade head
