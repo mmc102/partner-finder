@@ -18,7 +18,7 @@ echo "Starting the Docker containers..."
 docker-compose up -d --wait
 
 echo "Waiting for FastAPI to be ready..."
-until curl -s http://localhost:8000/health | grep -q "status"; do
+until curl -s http://localhost:8000/login | grep -q "status"; do
   echo "FastAPI is not ready yet. Retrying in 5 seconds..."
   sleep 5
 done
