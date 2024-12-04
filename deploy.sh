@@ -26,7 +26,7 @@ echo "FastAPI is ready."
 
 # Step 4: Run database migrations with Alembic
 echo "Running Alembic migrations..."
-docker-compose exec fastapi-app alembic upgrade head
+docker exec fastapi-app alembic upgrade head
 
 # Step 5: Show the status of the containers
 echo "Showing the status of the containers..."
