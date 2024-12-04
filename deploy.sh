@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 
 # Step 1: Pull the latest changes from the master branch
 echo "Pulling the latest changes from the master branch..."
