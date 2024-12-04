@@ -9,6 +9,8 @@ git pull origin main
 
 # Step 2: Build the Docker containers
 echo "Building the Docker containers..."
+
+docker-compose down
 docker-compose build
 
 # Step 3: Start the Docker containers
