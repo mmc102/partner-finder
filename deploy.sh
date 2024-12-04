@@ -13,7 +13,7 @@ docker-compose build
 
 # Step 3: Start the Docker containers
 echo "Starting the Docker containers..."
-docker-compose up -d
+docker-compose up -d --wait
 
 # Step 4: Run database migrations with Alembic
 echo "Running Alembic migrations..."
