@@ -15,8 +15,6 @@ docker-compose build
 echo "Starting the Docker containers..."
 docker-compose up -d
 
-wait 10
-
 # Step 4: Run database migrations with Alembic
 echo "Running Alembic migrations..."
 docker-compose exec fastapi-app alembic upgrade head
